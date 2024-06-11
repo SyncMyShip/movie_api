@@ -7,17 +7,21 @@ http.createServer((request, response) => {
 
     // parse incoming requests for the word "documentation"
     // navigate to documentation.html if true, home page if false
-    let addr = request.url;
-    q = new URL(addr, 'http://' + request.headers.host)
+    let filePath = "";
+    const addr = request.url;
+    const q = new URL(addr, 'http://' + request.headers.host);
 
     if (q.pathname.includes('documentation')) {
-    var filePath = (__dirname + '/documentation.html');
+        filePath = (__dirname + '/documentation.html');
     } else {
-    filePath = 'index.html';
+        filePath = 'index.html';
     }
 
     fs.readFile(filePath, (err, data) => {
-        response.writeHead(200, {'Content-Type': 'text/plain'});
+        if (err) {
+            throw err;
+        }
+        response.writeHead(200, {'Content-Type': 'text/html'});
         response.write(data);
         response.end('\n\nThanks for connecting!');
     })
