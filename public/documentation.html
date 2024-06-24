@@ -13,28 +13,79 @@
     <body>
         <!-- begin page content -->
         <section class="page-content">
-            <h1 style="font-size: 45px;">myFlix</h1>
-            <h3>Overview</h3>
-            <p>The purpose of this Achievement is to build out the server-side component<br>
-                of a web application. This application will be dedicated to providing users<br>
-                access to information about:
-                <ul>
-                    <li>Movies</li>
-                    <li>Directors</li>
-                    <li>Genres</li>
-                    <li>And more...</li>
-                </ul>
-                <br>
-            </p>
-
-            <h3>Functionality</h3>
-            <p>Once the application has been deployed, users will have the freedom to:
-                <ul>
-                    <li>Sign up for myFlix</li>
-                    <li>Update personal account details</li>
-                    <li>Create a list of their favorite movies</li>
-                </ul>
-            </p>
+            <table>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>HTTP Method</th>
+                    <th>Query Para</th>
+                    <th>Request Body</th>
+                    <th>Response Body</th>
+                </tr>
+                <tr>
+                    <td>Return list of ALL movies</td>
+                    <td>/movies</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>JSON object containing data about all movies</td>
+                </tr>
+                <tr>
+                    <td>Return data about a single movie by title</td>
+                    <td>/movies/:title</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>JSON object containing data about a single movie</td>
+                </tr>
+                <tr>
+                    <td>Return data about a genre by name/title</td>
+                    <td>/genres/:name</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>JSON object containing data about a specific genre</td>
+                </tr>
+                <tr>
+                    <td>Return data about a director by name</td>
+                    <td>/directors/:name</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>JSON object containing data about a specific director</td>
+                </tr>
+                <tr>
+                    <td>Allow new users to register</td>
+                    <td>/users</td>
+                    <td>POST</td>
+                    <td>JSON object containing information about the new user</td>
+                    <td>JSON object containing data about the new user</td>
+                </tr>
+                <tr>
+                    <td>Allow users to update their user information</td>
+                    <td>/users/:id</td>
+                    <td>PUT</td>
+                    <td>JSON object containing new information about an existing user</td>
+                    <td>Text with message indicating account information has been updated</td>
+                </tr>
+                <tr>
+                    <td>Allow users to add a movie to their list of favorites</td>
+                    <td>/users/:id/favorites</td>
+                    <td>PUT</td>
+                    <td>JSON object containing information about a specific movie</td>
+                    <td>Text with message "Added to favorites!"</td>
+                </tr>
+                <tr>
+                    <td>Allow users to remove a movie to their list of favorites</td>
+                    <td>/users/:id/favorites</td>
+                    <td>DELETE</td>
+                    <td>JSON object containing information about a specific movie</td>
+                    <td>Text with message "Removed from favorites"</td>
+                </tr>
+                <tr>
+                    <td>Allow existing users to deregister</td>
+                    <td>/users/:id</td>
+                    <td>DELETE</td>
+                    <td>JSON object containing information about a specific user</td>
+                    <td>Text with message "User email has been removed"</td>
+                </tr>
+            </table>
         </section>
         <!-- end page content -->
     </body>
