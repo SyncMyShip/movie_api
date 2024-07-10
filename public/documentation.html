@@ -30,21 +30,21 @@
                 </tr>
                 <tr>
                     <td>Return data about a single movie by title</td>
-                    <td>/movies/:title</td>
+                    <td>/movies/:Title</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>JSON object containing data about a single movie</td>
                 </tr>
                 <tr>
                     <td>Return data about a genre by name/title</td>
-                    <td>/genres/:name</td>
+                    <td>/movies/genres/:Name</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>JSON object containing data about a specific genre</td>
                 </tr>
                 <tr>
                     <td>Return data about a director by name</td>
-                    <td>/directors/:name</td>
+                    <td>/movies/directors/:Name</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>JSON object containing data about a specific director</td>
@@ -57,32 +57,32 @@
                     <td>JSON object containing data about the new user</td>
                 </tr>
                 <tr>
-                    <td>Allow users to update their user information</td>
-                    <td>/users/:id</td>
+                    <td>Allow users to update their username</td>
+                    <td>/users/:Username</td>
                     <td>PUT</td>
                     <td>JSON object containing new information about an existing user</td>
-                    <td>Text with message indicating account information has been updated</td>
+                    <td>JSON object containing updated information about an existing user</td>
                 </tr>
                 <tr>
                     <td>Allow users to add a movie to their list of favorites</td>
-                    <td>/users/:id/favorites</td>
-                    <td>PUT</td>
-                    <td>JSON object containing information about a specific movie</td>
-                    <td>Text with message "Added to favorites!"</td>
+                    <td>/users/:Username/movies/:MovieID</td>
+                    <td>POST</td>
+                    <td>None/td>
+                    <td>JSON object containing updated information about the targeted user</td>
                 </tr>
                 <tr>
                     <td>Allow users to remove a movie to their list of favorites</td>
-                    <td>/users/:id/favorites</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>DELETE</td>
-                    <td>JSON object containing information about a specific movie</td>
-                    <td>Text with message "Removed from favorites"</td>
+                    <td>None</td>
+                    <td>JSON object containing updated information about the targeted user</td>
                 </tr>
                 <tr>
                     <td>Allow existing users to deregister</td>
-                    <td>/users/:id</td>
+                    <td>/users/:Username</td>
                     <td>DELETE</td>
-                    <td>JSON object containing information about a specific user</td>
-                    <td>Text with message "User email has been removed"</td>
+                    <td>None</td>
+                    <td>Text containing message ":Username was deleted"</td>
                 </tr>
             </table>
         </section>

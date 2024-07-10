@@ -4,157 +4,13 @@ const express = require("express"),
 
 const app = express();
 
-// Top 10 Movies
-let movies = [
-    {
-        title: "Shrek",
-        released: "2001",
-        boxOffice: "$492.2 million",
-        genre: [
-            "Comedy"
-        ]
-    },
-    {
-        title: "Scott Pilgrim vs. the World",
-        released: "2010",
-        boxOffice: "$49.3 million",
-        genre: [
-            "Comedy",
-            "Action",
-            "Fantasy"
-        ]
-    },
-    {
-        title: "The Conjuring",
-        released: "2013",
-        boxOffice: "$319.5 million",
-        genre: [
-            "Horror",
-            "Thriller"
-        ]
-    },
-    {
-        title: "Barbie",
-        released: "2023",
-        boxOffice: "1.446 billion",
-        genre: [
-            "Comedy"
-        ],
-    },
-    {
-        title: "Get Out",
-        released: "2017",
-        boxOffice: "$255.4 million",
-        genre: [
-            "Horror",
-            "Thriller",
-            "Suspense"
-        ]
-    },
-    {
-        title: "Spirited Away",
-        released: "2002",
-        boxOffice: "$395.8 million",
-        genre: [
-            "Action",
-            "Fantasy"
-        ]
-    },
-    {
-        title: "The Addams Family",
-        released: "1991",
-        boxOffice: "$191.5 million",
-        genre: [
-            "Comedy",
-            "Dark"
-        ]
-    },
-    {
-        title: "The Menu",
-        released: "2022",
-        boxOffice: "$79.6 million",
-        genre: [
-            "Thriller",
-            "Suspense"
-        ]
-    },
-    {
-        title: "Free Solo",
-        released: "2018",
-        boxOffice: "29.4 million",
-        genre: [
-            "Documentary",
-            "Action",
-            "Adventure"
-        ]
-    },
-    {
-        title: "The Lion King",
-        released: "1994",
-        boxOffice: "$968.4 million",
-        genre: [
-            "Adventure",
-            "Musical"
-        ]
-    }
-]
+const mongoose = require('mongoose');
+const Models = require('./models.js');
 
-let directors = [
-    {
-        id: "D0001",
-        name: "Greta Gerwig",
-    }
-]
+const Movies = Models.Movie;
+const Users = Models.User;
 
-let genres = [
-    {
-        id: "G0001",
-        name: "Comedy",
-        description: "Comedy description goes here"
-    },
-    {
-        id: "G0002",
-        name: "Horror",
-        description: "Horror description goes here"
-    }
-]
-
-let users = [
-    {
-        id: "U0001",
-        name: "Jane Doe",
-        username: "jdoe",
-        favorites: [
-            {
-                title: "The Lion King",
-                released: "1994",
-                boxOffice: "$968.4 million",
-                genre: [
-                    "Adventure",
-                    "Musical"
-                ]
-            },
-            {
-                title: "The Menu",
-                released: "2022",
-                boxOffice: "$79.6 million",
-                genre: [
-                    "Thriller",
-                    "Suspense"
-                ]
-            },
-            {
-                title: "Spirited Away",
-                released: "2002",
-                boxOffice: "$395.8 million",
-                genre: [
-                    "Action",
-                    "Fantasy"
-                ]
-            }
-        ]
-    }
-]
+mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 // Middleware definitions
@@ -168,96 +24,151 @@ app.get("/", (req, res, next) => {
 
 
 // Returns the list of ALL movies
-app.get('/movies', (req, res) => {
-  res.json(movies);
+app.get('/movies', async (req, res) => {
+    await Movies.find()
+        .then((movies) => {
+            res.status(201).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+    });
 });
 
 
 // Returns data about a single movie by title
-app.get('/movies/:title', (req, res) => {
-    res.json(movies.find((movie) => 
-    { return movie.title === req.params.title }));
+app.get('/movies/:Title', async (req, res) => {
+    await Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            res.json(movie);
+        })
+        .catch((err) => {
+            console.error(err),
+            res.status(500).send('Error: ' + err)
+        })
 });
 
 
 // Returns data about a genre by name/title
-app.get('/genres/:name', (req, res) => {
-    res.json(genres.find((genre) => 
-    { return genre.name === req.params.name }));
-})
+app.get('/movies/genres/:Name', async (req, res) => {
+    await Movies.findOne({ "Genre.Name": req.params.Name })
+        .then((movie) => {
+            res.json(movie.Genre);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err)
+        })
+});
 
 
 // returns data about a director by name
-app.get('/directors/:name', (req, res) => {
-    res.json(directors.find((director) =>
-    { return director.name === req.params.name }))
-})
+app.get('/movies/directors/:Name', async (req, res) => {
+    await Movies.findOne({ "Director.Name": req.params.Name })
+        .then((movie) => {
+            res.json(movie.Director);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err)
+        })
+});
 
 
 // Allows a new user to register
-app.post('/users', (req, res) => {
-    let newUser = req.body;
-
-    if (!newUser.name) {
-        const msg = "Missing name in request body";
-        res.status(400).send(msg);
-    } else {
-        newUser.id = uuid.v4();
-        users.push(newUser);
-        res.status(201).send("Registration successful");
-    }
+app.post('/users', async (req, res) => {
+    await Users.findOne({ Username: req.body.Username })
+        .then((user) => {
+            if (user) {
+                return res.status(400).send(req.body.Username + ' already exists');
+            } else {
+                Users
+                    .create({
+                        Name: req.body.Name,
+                        Username: req.body.Username,
+                        Password: req.body.Password,
+                        Email: req.body.Email,
+                        DateOfBirth: req.body.DateOfBirth
+                    })
+                    .then((user) => {
+                        res.status(201).json(user)
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        res.status(500).send('Error: ' + err)
+                    })
+            }
+        })
 });
 
 
 // Allow users to update their username
-app.put('/users/:id', (req, res) => {
-    let user = users.find((user) => { return user.id === req.params.id });
-
-    if (!user) {
-        res.status(400).send('User does not exist');
-
-    } else {
-        user.username = req.body.username
-        res.status(201).send('Username has successfully been updated\n\n' + 'New username: ' + req.body.username)
-    }
+app.put('/users/:Username', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username },
+        { $set: {
+            Name: req.body.Name,
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            DateOfBirth: req.body.DateOfBirth
+        }},
+        { new: true })
+        .then((updatedUser) => {
+            res.json(updatedUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        })
 })
 
 
 // Allow users to add a movie to their favorites list
-app.put('/users/:id/favorites', (req, res) => {
-    let newFavorite = req.body.favorites;
-    let user = users.find((user) => { return user.id === req.params.id });
-
-    if (!user) {
-        res.status(400).send("User not found");
-    } else {
-        favorites = newFavorite;
-        res.status(201).send(newFavorite.title + " has been added to your favorites");   
-    }
-})
+app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username },
+        { $push: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true })
+    .then((updatedUser) => {
+        res.json(updatedUser);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err)
+    })
+});
 
 
 // Allow users to remove a movie from their favorites list
-app.delete('/users/:id/favorites', (req, res) => {
-    let removedFavorite = req.body;
-    let user = users.find((user) => { return user.id === req.params.id });
-
-    if (user) {
-        users = users.filter((movie) => { return movie.favorites !== removedFavorite });
-        res.status(201).send(req.body.title + " has been removed from your favorites");
-    }
+app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username },
+        { $pull: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true })
+    .then((updatedUser) => {
+        res.json(updatedUser);
+        })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err)
+    })
 });
 
 
 // Allow existing users to deregister
-app.delete('/users/:id', (req, res) => {
-    let userToRemove = req.body;
-    let user = users.find((user) => { return user.id === req.params.id });
-
-    if (user) {
-        users = users.filter((movie) => { return movie.id !== userToRemove.id });
-        res.status(201).send("User has been removed")
-    }
+app.delete('/users/:Username', async (req, res) => {
+    await Users.findOneAndDelete({ Username: req.params.Username })
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.Username + ' was not found')
+            } else {
+                res.status(200).send(req.params.Username + ' was deleted')
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err)
+        })
 });
 
 
