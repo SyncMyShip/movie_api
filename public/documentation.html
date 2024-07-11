@@ -9,11 +9,24 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+            <style>
+                table { 
+                    text-align: center;
+                } 
+                table td { 
+                    border: solid 1px #886; 
+                } 
+                table td pre {
+                    text-align: left;
+                    text-wrap: stable;
+                }
+            </style>
     </head>
     <body>
         <!-- begin page content -->
         <section class="page-content">
-            <table>
+            <table border="1">
                 <tr>
                     <th>Business Logic</th>
                     <th>URL</th>
@@ -26,63 +39,187 @@
                     <td>/movies</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>JSON object containing data about all movies</td>
+                    <td>
+                        <pre>
+{
+    "Genre": {
+        "Name": "Drama",
+        "Description": "Films intended to provoke emotional reactions from the audience."
+    },
+    "Director": {
+        "Name": "Frank Árpád Darabont",
+        "Bio": "Frank Árpád Darabont (born Ferenc Árpád Darabont) is an American screenwriter, director and producer. He has been nominated for three Academy Awards and a Golden Globe Award."
+    },
+    "_id": "668dc6e25156cbed0c7fe305",
+    "Title": "The Shawshank Redemption",
+    "Description": "Christopher Edward Nolan is a British-American filmmaker. He was born on July 30, 1970.",
+    "Released": "1970-07-30T00:00:00.000Z",
+    "Featured": true
+}   
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Return data about a single movie by title</td>
                     <td>/movies/:Title</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>JSON object containing data about a single movie</td>
+                    <td>
+                        <pre>
+{
+    "Genre": {
+        "Name": "Science Fiction",
+        "Description": "Films that explore speculative concepts, often futuristic."
+    },
+    "Director": {
+        "Name": "Christopher Nolan",
+        "Bio": "Christopher Edward Nolan is a British-American filmmaker. He was born on July 30, 1970."
+    },
+    "_id": "668dc6ea5156cbed0c7fe306",
+    "Title": "Inception",
+    "Description": "A mind-bending heist in the world of dreams.",
+    "Released": "2010-07-13T00:00:00.000Z",
+    "Featured": false
+}
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Return data about a genre by name/title</td>
                     <td>/movies/genres/:Name</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>JSON object containing data about a specific genre</td>
+                    <td>
+                        <pre>
+{
+    "Name": "Action",
+    "Description": "Films with fast-paced action scenes and thrilling plots."
+}
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Return data about a director by name</td>
                     <td>/movies/directors/:Name</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>JSON object containing data about a specific director</td>
+                    <td>
+                        <pre>
+{
+    "Name": "Christopher Nolan",
+    "Bio": "Christopher Edward Nolan is a British-American filmmaker. He was born on July 30, 1970."
+} 
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Allow new users to register</td>
                     <td>/users</td>
                     <td>POST</td>
-                    <td>JSON object containing information about the new user</td>
-                    <td>JSON object containing data about the new user</td>
+                    <td>
+                        <pre>
+{    
+    "Name": "John Doe",
+    "Username": "John.Doe.Username",
+    "Password": "John.Doe.Password",
+    "Email": "john.doe@example.com",
+    "DateOfBirth": "1985-05-25"
+}
+                        </pre>
+                    </td>
+                    <td>
+                        <pre>
+{
+    "Name": "John Doe",
+    "Username": "John.Doe.Username",
+    "Password": "John.Doe.Password",
+    "Email": "john.doe@example.com",
+    "DateOfBirth": "1985-05-25T00:00:00.000Z",
+    "FavoriteMovies": [],
+    "_id": "668dd4d9a0163fbaf577b6f7",
+    "__v": 0
+}
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Allow users to update their username</td>
                     <td>/users/:Username</td>
                     <td>PUT</td>
-                    <td>JSON object containing new information about an existing user</td>
-                    <td>JSON object containing updated information about an existing user</td>
+                    <td>
+                        <pre>
+{    
+    "Username": "John.Doe.Updated.Username"
+}
+                        </pre>
+                    </td>
+                    <td>
+                        <pre>
+{
+    "_id": "668dd4d9a0163fbaf577b6f7",
+    "Name": "John Doe",
+    "Username": "John.Doe.Updated.Username",
+    "Password": "John.Doe.Password",
+    "Email": "john.doe@example.com",
+    "DateOfBirth": "1985-05-25T00:00:00.000Z",
+    "FavoriteMovies": [],
+    "__v": 0
+}
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Allow users to add a movie to their list of favorites</td>
                     <td>/users/:Username/movies/:MovieID</td>
                     <td>POST</td>
-                    <td>None/td>
-                    <td>JSON object containing updated information about the targeted user</td>
+                    <td>None</td>
+                    <td>
+                        <pre>
+{
+    "_id": "668dd4d9a0163fbaf577b6f7",
+    "Name": "John Doe",
+    "Username": "John.Doe.Updated.Username",
+    "Password": "John.Doe.Password",
+    "Email": "john.doe@example.com",
+    "DateOfBirth": "1985-05-25T00:00:00.000Z",
+    "FavoriteMovies": [
+        "668dc70f5156cbed0c7fe30b"
+    ],
+    "__v": 0
+}
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Allow users to remove a movie to their list of favorites</td>
                     <td>/users/:Username/movies/:MovieID</td>
                     <td>DELETE</td>
                     <td>None</td>
-                    <td>JSON object containing updated information about the targeted user</td>
+                    <td>
+                        <pre>
+{
+    "_id": "668dd4d9a0163fbaf577b6f7",
+    "Name": "John Doe",
+    "Username": "John.Doe.Updated.Username",
+    "Password": "John.Doe.Password",
+    "Email": "john.doe@example.com",
+    "DateOfBirth": "1985-05-25T00:00:00.000Z",
+    "FavoriteMovies": [],
+    "__v": 0
+}
+                        </pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Allow existing users to deregister</td>
                     <td>/users/:Username</td>
                     <td>DELETE</td>
                     <td>None</td>
-                    <td>Text containing message ":Username was deleted"</td>
+                    <td>
+                        <pre>
+John.Doe.Updated.Username was deleted
+                        </pre>
+                    </td>
                 </tr>
             </table>
         </section>
