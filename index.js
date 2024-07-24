@@ -140,38 +140,34 @@ app.post('/users',
 
 // Allow users to update their username
 app.put('/users/:Username', 
-[
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-], passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if(req.user.Username !== req.params.Username) {
-        return res.status(400).send('Permission denied');
-    }
-    await Users.findOneAndUpdate({ Username: req.params.Username },
-        { $set: {
-            Name: req.body.Name,
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            DateOfBirth: req.body.DateOfBirth
-        }},
-        { new: true })
-        .then((updatedUser) => {
-            res.json(updatedUser);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        })
+    [
+        check('Username', 'Username is required').isLength({min: 5}),
+        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    ], passport.authenticate('jwt', { session: false }), async (req, res) => {
+        if(req.user.Username !== req.params.Username) {
+            return res.status(400).send('Permission denied');
+        }
+        await Users.findOneAndUpdate({ Username: req.params.Username },
+            { $set: {
+                Name: req.body.Name,
+                Username: req.body.Username,
+                Password: req.body.Password,
+                Email: req.body.Email,
+                DateOfBirth: req.body.DateOfBirth
+            }},
+            { new: true })
+            .then((updatedUser) => {
+                res.json(updatedUser);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            })
 })
 
 
 // Allow users to add a movie to their favorites list
-app.post('/users/:Username/movies/:MovieID',
-[
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('MovieID', 'MovieID contains non alphanumeric characters - not allowed.').isAlphanumeric()
-], passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
     }
