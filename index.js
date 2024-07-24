@@ -12,25 +12,38 @@ const Users = Models.User;
 // mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+let auth = require('./auth')(app);
+const cors = require('cors');
+
+const { check, validationResult } = require('express-validator');
 
 
 // Middleware definitions
+app.use(cors()); // this syntax allows access from world
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extend: true }));
 app.use(express.static("public"));
 
-
-let auth = require('./auth')(app);
-
 const passport = require('passport');
 require('./passport.js');
-app.use(passport.initialize());
 
+// CORS Definition
+// let allowedOrigins = ['http://localhost.8080'] // TODO: whitelist frontend app
+
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin) return callback(null, true);
+//         if(allowedOrigins.indexOf(origin) === -1) { // origin not found on list
+//             let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
+//             return callback(new Error(message), false);
+//         }
+//         return callback(null, true);
+//     }
+// }));
 
 app.get("/", (req, res, next) => {
     res.send("Welcome to myFlix!");
 });
-
 
 
 // Returns the list of ALL movies
@@ -86,7 +99,20 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
 
 
 // Allows a new user to register
-app.post('/users', async (req, res) => {
+app.post('/users',
+    [
+        check('Username', 'Username is required').isLength({min: 5}),
+        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(),
+        check('Email', 'Email does not appear to be valid').isEmail()
+    ], async (req, res) => {
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+
+    let hashedPassword = Users.hashedPassword(req.body.Password);
     await Users.findOne({ Username: req.body.Username })
         .then((user) => {
             if (user) {
@@ -96,7 +122,7 @@ app.post('/users', async (req, res) => {
                     .create({
                         Name: req.body.Name,
                         Username: req.body.Username,
-                        Password: req.body.Password,
+                        Password: hashedPassword,
                         Email: req.body.Email,
                         DateOfBirth: req.body.DateOfBirth
                     })
@@ -195,9 +221,9 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 
 // request listener
-port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
-    console.log("Listening on Port " + port);
+    console.log('Listening on Port ' + port);
 });
 
 // error handling for 500s
