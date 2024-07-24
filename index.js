@@ -28,7 +28,7 @@ const passport = require('passport');
 require('./passport.js');
 
 // CORS Definition
-// let allowedOrigins = ['http://localhost.8080'] // TODO: whitelist frontend app
+// let allowedOrigins = ['http://localhost:8080'] // TODO: whitelist frontend app
 
 // app.use(cors({
 //     origin: (origin, callback) => {
@@ -112,7 +112,7 @@ app.post('/users',
             return res.status(422).json({ errors: errors.array() });
         }
 
-    let hashedPassword = Users.hashedPassword(req.body.Password);
+    let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({ Username: req.body.Username })
         .then((user) => {
             if (user) {
