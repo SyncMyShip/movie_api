@@ -139,7 +139,11 @@ app.post('/users',
 
 
 // Allow users to update their username
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
+[
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+], async (req, res) => {
     if(req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
     }
@@ -163,7 +167,11 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
 
 // Allow users to add a movie to their favorites list
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),
+[
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('MovieID', 'MovieID contains non alphanumeric characters - not allowed.').isAlphanumeric()
+], async (req, res) => {
     if(req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
     }
