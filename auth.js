@@ -1,4 +1,7 @@
 const jwtSecret = 'your_jwt_secret';
+const express = require("express");
+
+const app = express();
 
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
@@ -13,6 +16,8 @@ let generateJWTToken = (user) => {
     });
 }
 
+const cors = require('cors');
+app.use(cors()); // this syntax allows access from world
 
 // POST login
 module.exports = (router) => {
