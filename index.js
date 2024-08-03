@@ -1,8 +1,6 @@
 const express = require("express"),
     bodyParser = require('body-parser');
 
-const cors = require('cors');
-let auth = require('./auth')(app);
 
 const app = express();
 
@@ -25,6 +23,10 @@ const { check, validationResult } = require('express-validator');
 app.use(cors()); // this syntax allows access from world
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extend: true }));
+
+const cors = require('cors');
+app.use(cors());
+let auth = require('./auth')(app);
 app.use(express.static("public"));
 
 const passport = require('passport');
