@@ -1,6 +1,9 @@
 const express = require("express"),
     bodyParser = require('body-parser');
 
+const cors = require('cors');
+let auth = require('./auth')(app);
+
 const app = express();
 
 const mongoose = require('mongoose');
@@ -12,8 +15,8 @@ const Users = Models.User;
 // mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-let auth = require('./auth')(app);
-const cors = require('cors');
+
+
 
 const { check, validationResult } = require('express-validator');
 
@@ -28,7 +31,7 @@ const passport = require('passport');
 require('./passport.js');
 
 // CORS Definition
-// let allowedOrigins = ['http://localhost:8080'] // TODO: whitelist frontend app
+// let allowedOrigins = ['http://localhost:1234'] // TODO: whitelist frontend app
 
 // app.use(cors({
 //     origin: (origin, callback) => {
