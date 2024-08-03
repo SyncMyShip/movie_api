@@ -20,12 +20,11 @@ const { check, validationResult } = require('express-validator');
 
 
 // Middleware definitions
-app.use(cors()); // this syntax allows access from world
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extend: true }));
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors()); // this syntax allows access from world
 let auth = require('./auth')(app);
 app.use(express.static("public"));
 
