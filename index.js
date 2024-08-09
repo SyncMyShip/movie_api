@@ -4,6 +4,7 @@ const express = require("express"),
 
 const app = express();
 
+
 const mongoose = require('mongoose');
 const Models = require('./models');
 
@@ -14,19 +15,18 @@ const Users = Models.User;
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-
-
 const { check, validationResult } = require('express-validator');
 
 
 // Middleware definitions
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extend: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 const cors = require('cors');
 app.use(cors()); // this syntax allows access from world
 let auth = require('./auth')(app);
-app.use(express.static("public"));
+
 
 const passport = require('passport');
 require('./passport.js');
