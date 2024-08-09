@@ -103,7 +103,7 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
 
 
 // Allows a new user to register
-app.post('/users',
+app.post('/signup',
     [
         check('Username', 'Username is required').isLength({min: 5}),
         check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
