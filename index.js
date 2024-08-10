@@ -145,9 +145,9 @@ app.post('/signup',
 // Returns information about a specific user
 app.get('/users/:Username', 
     passport.authenticate('jwt', { session: false }), async (req, res) => {
-        await Users.findOne({ "Username": req.params.Username })
+        await Users.findOne({ Username: req.params.Username })
         .then((user) => {
-            res.json(user.Username);
+            res.json(user);
         })
         .catch((err) => {
             console.error(err);
