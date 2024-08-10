@@ -11,8 +11,8 @@ const Models = require('./models');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const { check, validationResult } = require('express-validator');
@@ -140,6 +140,20 @@ app.post('/signup',
             }
         })
 });
+
+
+// Returns information about a specific user
+app.get('/users/:Username', 
+    passport.authenticate('jwt', { session: false }), async (req, res) => {
+        await Users.findOne({ "Username": req.params.Username })
+        .then((user) => {
+            res.json(user.Username);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err)
+        })
+})
 
 
 // Allow users to update their username
