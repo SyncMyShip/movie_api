@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 const cors = require('cors');
-app.use(cors()); // this syntax allows access from world
+// app.use(cors()); // this syntax allows access from world
 let auth = require('./auth')(app);
 
 
@@ -32,18 +32,18 @@ const passport = require('passport');
 require('./passport.js');
 
 // CORS Definition
-// let allowedOrigins = ['http://localhost:1234'] // TODO: whitelist frontend app
+let allowedOrigins = ['http://localhost:1234', 'http://localhost:8080', 'https://reelvouz.netlify.app/'] // TODO: whitelist frontend app
 
-// app.use(cors({
-//     origin: (origin, callback) => {
-//         if (!origin) return callback(null, true);
-//         if(allowedOrigins.indexOf(origin) === -1) { // origin not found on list
-//             let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
-//             return callback(new Error(message), false);
-//         }
-//         return callback(null, true);
-//     }
-// }));
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) { // origin not found on list
+            let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
 
 app.get("/", (req, res, next) => {
     res.send("Welcome to myFlix!");
