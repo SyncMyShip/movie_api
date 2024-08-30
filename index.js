@@ -33,7 +33,12 @@ const passport = require('passport');
 require('./passport.js');
 
 // CORS Definition
-let allowedOrigins = ['http://localhost:1234', 'http://localhost:8080', 'https://reelvouz.netlify.app'] // TODO: whitelist frontend app
+let allowedOrigins = [
+    'http://localhost:1234',
+    'http://localhost:8080', 
+    'https://reelvouz.netlify.app', 
+    'https://deploy-preview-13--reelvouz.netlify.app/'
+] // TODO: whitelist frontend app
 
 app.use(cors({
     origin: (origin, callback) => {
