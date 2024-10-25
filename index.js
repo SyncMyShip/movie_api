@@ -39,7 +39,8 @@ let allowedOrigins = [
     'http://localhost:8080', 
     'https://reelvouz.netlify.app', 
     'https://deploy-preview-13--reelvouz.netlify.app',
-    'https://reelvouz.netlify.app'
+    'https://reelvouz.netlify.app',
+    'https://syncmyship.github.io'
 ] // TODO: whitelist frontend app
 
 app.use(cors({
