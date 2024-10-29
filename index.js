@@ -40,6 +40,7 @@ let allowedOrigins = [
     'https://reelvouz.netlify.app', 
     'https://deploy-preview-13--reelvouz.netlify.app',
     'https://reelvouz.netlify.app',
+    "https://reelrendezvous-angular.netlify.app",
     'https://syncmyship.github.io'
 ] // TODO: whitelist frontend app
 
