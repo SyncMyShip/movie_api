@@ -1,4 +1,32 @@
-const express = require("express"),
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const express = require("express"),
     bodyParser = require('body-parser');
 
 
@@ -11,8 +39,8 @@ const Models = require('./models');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://127.0.0.1:27017/movie-api-db', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const { check, validationResult } = require('express-validator');
@@ -70,8 +98,8 @@ app.get("/", (req, res, next) => {
  * GET /movies
  * @name getAllMovies
  * @function
- * @returns {Array} List of movies:<br>
- *  <pre>
+ * @returns {Array} List of movies:&lt;br>
+ *  &lt;pre>
     {
         "Genre": {
             "Name": string,
@@ -87,7 +115,7 @@ app.get("/", (req, res, next) => {
         "Released": string,
         "Featured": boolean
     }   
-    </pre>
+    &lt;/pre>
  */
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.find()
@@ -106,8 +134,8 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
  * @name getMovie
  * @function
  * @param {string} Title - The title of the movie.
- * @returns {Object} An object containing the following movie details:<br>
- *  <pre>
+ * @returns {Object} An object containing the following movie details:&lt;br>
+ *  &lt;pre>
     {
         "Genre": {
             "Name": string,
@@ -123,7 +151,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
         "Released": string,
         "Featured": boolean
     }
-    </pre>
+    &lt;/pre>
  */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.findOne({ Title: req.params.Title })
@@ -142,13 +170,13 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
  * @name getGenre
  * @function
  * @param {string} Name - genre name
- * @returns {Object} Genre details:<br>
- *  <pre>
+ * @returns {Object} Genre details:&lt;br>
+ *  &lt;pre>
     {
         "Name": string,
         "Description": string
     }
-    </pre>
+    &lt;/pre>
  */
 app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.findOne({ "Genre.Name": req.params.Name })
@@ -167,13 +195,13 @@ app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false })
  * @name getDirector
  * @function
  * @param {string} Name - director name
- * @returns {Object} Director details:<br>
- *  <pre>
+ * @returns {Object} Director details:&lt;br>
+ *  &lt;pre>
     {
         "Name": string,
         "Bio": string
     } 
-    </pre>
+    &lt;/pre>
  */
 app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.findOne({ "Director.Name": req.params.Name })
@@ -191,8 +219,8 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
  * POST /signup
  * @name userSignup
  * @function
- * @returns {Object} New user object:<br>
- *  <pre>
+ * @returns {Object} New user object:&lt;br>
+ *  &lt;pre>
     {    
         "Name": string,
         "Username": string,
@@ -200,7 +228,7 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
         "Email": string,
         "DateOfBirth": string
     }
-    </pre>
+    &lt;/pre>
  */
 app.post('/signup',
     [
@@ -246,8 +274,8 @@ app.post('/signup',
  * @name getUser
  * @function
  * @param {string} Username - username
- * @returns {Object} User details:<br>
- *  <pre>
+ * @returns {Object} User details:&lt;br>
+ *  &lt;pre>
     {
         "Name": string,
         "Username": string,
@@ -258,7 +286,7 @@ app.post('/signup',
         "_id": string,
         "__v": int
     }
-    </pre>
+    &lt;/pre>
  */
 app.get('/users/:Username', 
     passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -278,8 +306,8 @@ app.get('/users/:Username',
  * @name updateUser
  * @function
  * @param {string} Username - username
- * @returns {Object} Updated user details:<br>
- *  <pre>
+ * @returns {Object} Updated user details:&lt;br>
+ *  &lt;pre>
     {
         "Name": string,
         "Username": string,
@@ -290,7 +318,7 @@ app.get('/users/:Username',
         "_id": string,
         "__v": int
     }
-    </pre>
+    &lt;/pre>
  */
 app.put('/users/:Username', 
     [
@@ -330,8 +358,8 @@ app.put('/users/:Username',
  * @function
  * @param {string} Username - username
  * @param {string} MovieID - ID of the movie to add to favorites
- * @returns {Object} User details:<br>
- *  <pre>
+ * @returns {Object} User details:&lt;br>
+ *  &lt;pre>
     {
         "_id": string,
         "Name": string,
@@ -342,7 +370,7 @@ app.put('/users/:Username',
         "FavoriteMovies": [],
         "__v": int
     }
-    </pre>
+    &lt;/pre>
  */
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username) {
@@ -368,8 +396,8 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
  * @function
  * @param {string} Username - username
  * @param {string} MovieID - ID of the movie to remove from favorites
- * @returns {Object} User details:<br>
- *  <pre>
+ * @returns {Object} User details:&lt;br>
+ *  &lt;pre>
     {
         "_id": string,
         "Name": string,
@@ -380,7 +408,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
         "FavoriteMovies": [],
         "__v": int
     }
-    </pre>
+    &lt;/pre>
  */
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username) {
@@ -405,10 +433,10 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
  * @name deleteUser
  * @function
  * @param {string} Username - username
- * @returns {string} Confirmation message:<br>
- *  <pre>
-        <user> was deleted
-    </pre>
+ * @returns {string} Confirmation message:&lt;br>
+ *  &lt;pre>
+        &lt;user> was deleted
+    &lt;/pre>
  */
 
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -440,4 +468,26 @@ app.listen(port, '0.0.0.0', () => {
 app.use((err, res, req, next) => {
     console.error(err.stack);
     res.status(500).send("Oh no, something is broken!");
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addFavorite">addFavorite</a></li><li><a href="global.html#deleteFavorite">deleteFavorite</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#getAllMovies">getAllMovies</a></li><li><a href="global.html#getDirector">getDirector</a></li><li><a href="global.html#getGenre">getGenre</a></li><li><a href="global.html#getMovie">getMovie</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#home">home</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#userLogin">userLogin</a></li><li><a href="global.html#userSignup">userSignup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Nov 09 2024 14:28:46 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

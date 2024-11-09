@@ -34,5 +34,8 @@
   "directories": {
     "test": "test"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "jsdoc": "^4.0.4"
+  }
 }

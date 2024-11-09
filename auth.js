@@ -13,7 +13,22 @@ let generateJWTToken = (user) => {
     });
 }
 
-// POST login
+/**
+ * POST /login
+ * @name userLogin
+ * @function
+ * @returns {Object} User object:<br>
+ *  <pre>
+    {    
+        "Name": string,
+        "Username": string,
+        "Password": string,
+        "Email": string,
+        "DateOfBirth": string,
+        "Token": string
+    }
+    </pre>
+ */
 module.exports = (router) => {
     router.post('/login', (req, res) => {
         res.header("Access-Control-Allow-Origin", "*"); 
